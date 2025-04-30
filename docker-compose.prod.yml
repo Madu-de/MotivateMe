@@ -1,0 +1,43 @@
+services:
+  motivateme-database:
+    container_name: motivateme-database
+    image: postgres:17.4-alpine3.21
+    restart: always
+    environment:
+      POSTGRES_USER: ${MOTIVATEME_BACKEND_DATABASE_USER}
+      POSTGRES_PASSWORD: ${MOTIVATEME_BACKEND_DATABASE_PASSWORD}
+      POSTGRES_DB: ${MOTIVATEME_BACKEND_DATABASE_NAME}
+  motivateme-frontend:
+    container_name: motivateme-frontend
+    build:
+      context: .
+      dockerfile: ./apps/frontend/Dockerfile
+    env_file: .env
+  motivateme-backend:
+    container_name: motivateme-backend
+    build: 
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+    env_file: .env
+    depends_on: 
+      - motivateme-database
+  motivateme-proxy:
+    container_name: motivateme-proxy
+    image: nginx:alpine
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./dist/conf.d:/etc/nginx/conf.d/
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    depends_on:
+      - motivateme-frontend
+      - motivateme-backend
+  motivateme-certbot:
+    container_name: motivateme-certbot
+    image: certbot/certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
