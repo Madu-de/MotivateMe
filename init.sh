@@ -24,7 +24,7 @@ echo -e "${Cyan}MOTIVATEME ${Green}[INFO]${Color_Off} | ${Purple}Create 80.conf 
 
 sed "s/__DOMAIN__/$MOTIVATEME_LETS_ENCRYPT_DOMAIN/g" proxy/nginx-80-template.conf > dist/conf.d/80.conf
 
-echo -e "${Cyan}LEIHUGT ${Green}[INFO]${Color_Off} | ${Purple}Start application${Color_Off}"
+echo -e "${Cyan}MOTIVATEME ${Green}[INFO]${Color_Off} | ${Purple}Start application${Color_Off}"
 
 docker compose -f docker-compose.prod.yml up --build -d
 
