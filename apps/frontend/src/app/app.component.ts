@@ -1,6 +1,7 @@
 import { User } from '@motivateme/zod-schemas';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -15,5 +16,6 @@ export class AppComponent {
     const user: User = {
       name: 'test',
     };
+    console.log(environment.api.baseUrl);
   }
 }
